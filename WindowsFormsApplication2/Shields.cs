@@ -15,6 +15,23 @@ namespace WindowsFormsApplication2
     {
         public List<Shield> shieldList = new List<Shield>();
 
+        public void setup()
+        {
+            foreach (Shield shield in shieldList)
+            {
+                //int id = shield.registerShield();
+
+            }
+        }
+
+        public void loop(String nodeId)
+        {
+            foreach (Shield shield in shieldList)
+            {
+                shield.checkStatus();
+            }
+        }
+
         public bool removeShield(String nodeId)
         {
             Shield shield = shieldFromNodeId(nodeId);
@@ -41,6 +58,18 @@ namespace WindowsFormsApplication2
             return null;
         }
 
+        public Shield shieldFromId(int id)
+        {
+            foreach (Shield shield in shieldList)
+            {
+                if (shield.id == id)
+                {
+                    return shield;
+                }
+            }
+            return null;
+        }
+
         public bool removeSensor(String nodeId)
         {
             foreach (Shield shield in shieldList)
@@ -56,7 +85,7 @@ namespace WindowsFormsApplication2
             }
             return false;
         }
-
+        
         public bool removeActuator(String nodeId)
         {
             foreach (Shield shield in shieldList)
@@ -72,5 +101,15 @@ namespace WindowsFormsApplication2
             }
             return false;
         }
+
+        internal Shield shieldFromId(object shielId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /*        internal void setup()
+                {
+                    throw new NotImplementedException();
+                }*/
     }
 }

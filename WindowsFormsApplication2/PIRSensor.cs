@@ -6,25 +6,30 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApplication2
 {
-    class Heater : Sensor
+    public class PIRSensor : Sensor
     {
-        public String status;
-        public String releStatus;
+        public bool motionDetected;
 
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"status\":\"";
-            json += status + "\"";
-            json += ",\"relestatus\":\"";
-            json += releStatus + "\"";
+            json += "\"motiondetected\":";
+            if (motionDetected)
+                json += "true";
+            else
+                json += "false";
             json += ",\"name\":\"";
             json += sensorname + "\"";
-            json += ",\"type\":\"heater\"";
+            json += ",\"type\":\"pirsensor\"";
             json += ",\"addr\":\"";
             json += getSensorAddress() + "\"}";
             return json;
+        }
+
+        bool getMotionDetected()
+        {
+            return motionDetected;
         }
     }
 }

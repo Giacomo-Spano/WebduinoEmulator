@@ -8,12 +8,10 @@ namespace WindowsFormsApplication2
 {
     public class DS18S20Sensor : Sensor
     {
-
         public float temperature;
         public float avTemperature;
         
-
-        public String getJSON()
+        public override String getJSON()
         {
             String json = "";
             json += "{";

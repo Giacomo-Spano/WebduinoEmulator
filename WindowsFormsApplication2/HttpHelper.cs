@@ -10,12 +10,13 @@ namespace WindowsFormsApplication2
 {
     class HttpHelper
     {
-        public String sendPost(String path, String body)
+        public String sendPost(String serverurl, int port, String path, String body)
         {
 
             byte[] data = Encoding.ASCII.GetBytes(body);
 
-            String url = "http://192.168.1.5:8080/webduino" + path;
+            //String url = "http://192.168.1.5:8080/webduino" + path;
+            String url = "http://" +  serverurl + ":" + port + "/" + path;
 
             WebRequest request = WebRequest.Create(url);
             request.Method = "POST";

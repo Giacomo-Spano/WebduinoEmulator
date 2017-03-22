@@ -9,14 +9,21 @@ namespace WindowsFormsApplication2
     public class Sensor
     {
         public String nodeId;
+        public String address;
 
-        public String getJSON()
+
+        virtual public String getJSON()
         {
             return "";
         }
         public String getSensorAddress()
         {
-            return "aaaaaaaa";
+            return address;
+        }
+
+        public void setSensorAddress(String address)
+        {
+            this.address = address;
         }
 
         public String sensorname = "sensorname";

@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApplication2
 {
-    class Heater : Sensor
+    class ReleActuator : Sensor
     {
-        public String status;
-        public String releStatus;
+        public bool releOn;
 
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"status\":\"";
-            json += status + "\"";
-            json += ",\"relestatus\":\"";
-            json += releStatus + "\"";
+            json += "\"releon\":";
+            if (releOn)
+                json += "true";
+            else
+                json += "false";
             json += ",\"name\":\"";
             json += sensorname + "\"";
-            json += ",\"type\":\"heater\"";
+            json += ",\"type\":\"releactuator\"";
             json += ",\"addr\":\"";
             json += getSensorAddress() + "\"}";
             return json;

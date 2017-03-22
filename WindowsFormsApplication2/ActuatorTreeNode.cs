@@ -10,12 +10,12 @@ namespace WindowsFormsApplication2
     
     class ActuatorTreeNode : TreeNode
     {
-        public Sensor actuator;
+        public String shieldNodeId;
+        public String actuatorNodeId;
 
         public ActuatorTreeNode(Sensor adapter)
         {
-            this.Text = "adapter";
-            this.actuator = adapter;
+            this.Text = adapter.sensorname;
         }
     }
 }

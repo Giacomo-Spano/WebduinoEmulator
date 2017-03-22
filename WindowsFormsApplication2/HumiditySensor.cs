@@ -6,25 +6,27 @@ using System.Threading.Tasks;
 
 namespace WindowsFormsApplication2
 {
-    class Heater : Sensor
+    public class HumiditySensor : Sensor
     {
-        public String status;
-        public String releStatus;
+        public float humidity;
 
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"status\":\"";
-            json += status + "\"";
-            json += ",\"relestatus\":\"";
-            json += releStatus + "\"";
+            json += "\"humidity\":";
+            json += humidity;
             json += ",\"name\":\"";
             json += sensorname + "\"";
-            json += ",\"type\":\"heater\"";
+            json += ",\"type\":\"humiditysensor\"";
             json += ",\"addr\":\"";
             json += getSensorAddress() + "\"}";
             return json;
+        }
+
+        public float getHumidity()
+        {
+            return humidity;
         }
     }
 }

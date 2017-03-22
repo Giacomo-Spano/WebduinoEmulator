@@ -21,7 +21,14 @@ namespace JamesWright.SimpleHttp
         public async Task StartAsync(string port, RouteRepository routeRepository)
         {
             this.httpListener.Prefixes.Add(string.Format("http://localhost:{0}/", port));
-            this.httpListener.Start();
+            try
+            {
+                this.httpListener.Start();
+            }
+            catch (Exception e)
+            {
+                System.Net.HttpListenerException ex = (System.Net.HttpListenerException)e;
+            }
 
             Console.WriteLine("Listening for requests on port {0}.", port);
 

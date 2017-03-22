@@ -8,14 +8,15 @@ using System.Windows.Forms;
 namespace WindowsFormsApplication2
 {
 
-    class SensorTreeNode : TreeNode
+    class SettingsTreeNode : TreeNode
     {
-        public String sensorNodeId;
-        public String shieldNodeId;
+        public Settings settings;
 
-        public SensorTreeNode(Sensor sensor)
+
+        public SettingsTreeNode(String name)
         {
-            this.Text = sensor.sensorname;
+            this.Text = name;
+            //this.shield = shield;
         }
     }
 }

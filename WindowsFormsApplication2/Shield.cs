@@ -5,14 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using static WindowsFormsApplication2.Form1;
 
 namespace WindowsFormsApplication2
 {
-    
+
     public class Shield
     {
 
         public String nodeId;
+        public Alpha oAlpha = new Alpha();
+        public bool started;
 
         const int D0 = 16;
         const int D1 = 5;
@@ -33,10 +36,13 @@ namespace WindowsFormsApplication2
         const int ioDevices_Heater = 1;
         const int ioDevices_OneWireSensors = 2;
 
-        static int id;// = 0; // inizializzato a zero perchè viene impostato dalla chiamata a registershield
-        //static int ioDevices[maxIoDevices];
-        static bool heaterEnabled;
-        static bool temperatureSensorsEnabled;
+        public int id;// = 0; // inizializzato a zero perchè viene impostato dalla chiamata a registershield
+        public String MACAddress = "00:01:02:03:04:05";
+        public String localPort;
+        public String shieldName;
+        public bool heaterEnabled;
+        public bool temperatureSensorsEnabled;
+
         static int oneWirePin;
         static int heaterPin; // pin rele heater
         static String powerStatus; // power
@@ -52,12 +58,51 @@ namespace WindowsFormsApplication2
         void checkActuatorsStatus();
         void checkSensorsStatus();*/
 
-        int localPort;
+        public void checkStatus()
+        {
+            checkActuatorsStatus();
+            checkSensorsStatus();
+        }
+
+        void checkActuatorsStatus()
+        {
+        }
+
+        void checkSensorsStatus()
+        {
+        }
+
+
+        public Sensor sensorFromNodeId(String nodeId)
+        {
+            foreach (Sensor sensor in sensorList)
+            {
+                if (sensor.nodeId == nodeId)
+                {
+                    return sensor;
+                }
+            }
+            return null;
+        }
+
+        public Sensor actuatorFromNodeId(String nodeId)
+        {
+            foreach (Sensor sensor in actuatorList)
+            {
+                if (sensor.nodeId == nodeId)
+                {
+                    return sensor;
+                }
+            }
+            return null;
+        }
+
+
         String networkSSID;
         String networkPassword;
         String serverName;//[serverNameLen];
         int serverPort;
-        public String shieldName;
+
 
         /*ESPDisplay display;
         TFTDisplay tftDisplay;*/
@@ -69,7 +114,7 @@ namespace WindowsFormsApplication2
 
         public List<Sensor> actuatorList = new List<Sensor>();
         public string localIP;
-
+        //internal string port;
 
         public Shield()
         {
@@ -110,7 +155,7 @@ namespace WindowsFormsApplication2
                     DS18S20Sensor temperatureSensor = (DS18S20Sensor)sensor;
                     if (i++ != 0)
                         json += ",";
-                    json += sensor.getJSON();
+                    json += temperatureSensor.getJSON();
                 }
             }
 
@@ -260,12 +305,12 @@ namespace WindowsFormsApplication2
 
         }
 
-        int getLocalPort()
+        String getLocalPort()
         {
             return localPort;
         }
 
-        void setLocalPort(int port)
+        void setLocalPort(String port)
         {
             localPort = port;
         }
@@ -334,33 +379,36 @@ namespace WindowsFormsApplication2
 
             String str = getSensorsStatusJson();
             HttpHelper hplr = new HttpHelper();
-            hplr.sendPost("/sensor", str);
+            hplr.sendPost(Settings.serverIpAddress, Settings.serverPort, "webduino/sensor", str);
 
             return true;
         }
 
         public int registerShield()
         {
-
             String str = "{";
             str += "\"event\":\"register\",";
 
             str += "\"shield\": ";
             str += "{";
-            str += "\"MAC\":\"" + "MAC_char" + "\"";
+            str += "\"MAC\":\"" + MACAddress + "\"";
             str += ",\"shieldName\":\"" + getShieldName() + "\"";
             str += ",\"localIP\":\"" + localIP + "\"";
-            str += ",\"localPort\":\"" + getLocalPort() + "\"";
+            str += ",\"localport\":\"" + getLocalPort() + "\"";
 
             // sensori
             str += ",\"sensors\":[";
             int i = 0;
             foreach (Sensor sensor in sensorList)
             {
-                DS18S20Sensor temperatureSensor = (DS18S20Sensor)sensor;
-                if (i++ != 0)
-                    str += ",";
-                str += temperatureSensor.getJSON();
+                /*if (temperatureSensorsEnabled)
+                {*/
+                    //DS18S20Sensor temperatureSensor = (DS18S20Sensor)sensor;
+                    if (i != 0)
+                        str += ",";
+                    str += sensor.getJSON();
+                    i++;
+                //}
             }
             str += "]";
 
@@ -372,14 +420,27 @@ namespace WindowsFormsApplication2
 
             str += "}";
 
-
             HttpHelper hplr = new HttpHelper();
-            String result = hplr.sendPost("/shield", str);
 
-            dynamic jsonResult = JObject.Parse(result);            
-            id = jsonResult.id;
+            try
+            {
+                String result = hplr.sendPost(Settings.serverIpAddress, Settings.serverPort, "webduino/shield", str);
 
-            return id;
+
+                dynamic jsonResult = JObject.Parse(result);
+                id = jsonResult.id;
+
+                //oAlpha.shieldId = id;//
+
+               
+                return id;
+
+            }
+            catch (Exception e)
+            {
+                
+                return -1;
+            }
         }
 
 
@@ -387,26 +448,35 @@ namespace WindowsFormsApplication2
         {
             String str = "{";
 
-            str += "\"MAC\":\"" + "MAC_char" + "\"";
+            str += "\"MAC\":\"" + MACAddress + "\"";
             str += ",\"shieldName\":\"" + getShieldName() + "\"";
             str += ",\"localIP\":\"" + localIP + "\"";
             str += ",\"localPort\":\"" + getLocalPort() + "\"";
+            if (temperatureSensorsEnabled)
+                str += ",\"temperatureSensorsEnabled\":true";
+            else
+                str += ",\"temperatureSensorsEnabled\":false";
 
             // sensori
             str += ",\"sensors\":[";
-            int i = 0;
+            int nSensors = 0;
             foreach (Sensor sensor in sensorList)
             {
-                DS18S20Sensor temperatureSensor = (DS18S20Sensor)sensor;
-                if (i++ != 0)
-                    str += ",";
-                str += temperatureSensor.getJSON();
+                if (nSensors++ != 0)
+                        str += ",";
+                    str += sensor.getJSON();
             }
             str += "]";
 
             // attuatori
             str += ",\"actuators\":[";
-            //str += hearterActuator.getJSON();
+            int nActuators = 0;
+            foreach (Sensor actuator in actuatorList)
+            {
+                if (nActuators++ != 0)
+                    str += ",";
+                str += actuator.getJSON();
+            }
             str += "]";
 
             str += "}";

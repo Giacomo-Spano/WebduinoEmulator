@@ -11,10 +11,52 @@ namespace WindowsFormsApplication2
         public ShieldProperty()
         {
         }
-
+        private String nodeId;
+        private String started;
         private String name ;
-        private String value = "xxx";
-        private int action;
+        private String value;
+        private String description;
+        private String action;
+        private String temperatureSensorEnabled;
+
+        public string NodeId
+        {
+            get
+            {
+                return nodeId;
+            }
+
+            set
+            {
+                this.nodeId = value;
+            }
+        }
+
+        public string Started
+        {
+            get
+            {
+                return started;
+            }
+
+            set
+            {
+                this.started = value;
+            }
+        }
+
+        public string TemperatureSensorEnabled
+        {
+            get
+            {
+                return temperatureSensorEnabled;
+            }
+
+            set
+            {
+                this.temperatureSensorEnabled = value;
+            }
+        }
 
         public string Name
         {
@@ -42,7 +84,7 @@ namespace WindowsFormsApplication2
             }
         }
 
-        public int Action
+        public string Action
         {
             get
             {
@@ -52,6 +94,19 @@ namespace WindowsFormsApplication2
             set
             {
                 action = value;
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return description;
+            }
+
+            set
+            {
+                description = value;
             }
         }
     }
