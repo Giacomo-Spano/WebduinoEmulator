@@ -401,20 +401,23 @@ namespace WindowsFormsApplication2
             int i = 0;
             foreach (Sensor sensor in sensorList)
             {
-                /*if (temperatureSensorsEnabled)
-                {*/
-                    //DS18S20Sensor temperatureSensor = (DS18S20Sensor)sensor;
-                    if (i != 0)
-                        str += ",";
-                    str += sensor.getJSON();
-                    i++;
-                //}
+                if (i != 0)
+                    str += ",";
+                str += sensor.getJSON();
+                i++;
             }
             str += "]";
 
             // attuatori
             str += ",\"actuators\":[";
-            //str += hearterActuator.getJSON();
+            i = 0;
+            foreach (Sensor actuator in actuatorList)
+            {
+                if (i != 0)
+                    str += ",";
+                str += actuator.getJSON();
+                i++;
+            }
             str += "]";
             str += "}";
 
@@ -432,13 +435,13 @@ namespace WindowsFormsApplication2
 
                 //oAlpha.shieldId = id;//
 
-               
+
                 return id;
 
             }
             catch (Exception e)
             {
-                
+
                 return -1;
             }
         }
@@ -463,8 +466,8 @@ namespace WindowsFormsApplication2
             foreach (Sensor sensor in sensorList)
             {
                 if (nSensors++ != 0)
-                        str += ",";
-                    str += sensor.getJSON();
+                    str += ",";
+                str += sensor.getJSON();
             }
             str += "]";
 

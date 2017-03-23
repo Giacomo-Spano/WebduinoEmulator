@@ -732,6 +732,10 @@ namespace WindowsFormsApplication2
                         {
                             newSensor = new CurrentSensor();
                         }
+                        else if (type.Equals("pirsensor"))
+                        {
+                            newSensor = new PIRSensor();
+                        }
                         else
                         {
                             continue;
