@@ -10,17 +10,21 @@ namespace WindowsFormsApplication2
     {
         public float current;
 
+        public CurrentSensor()
+        {
+            type = "currentsensor";
+        }
+
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"current\":";
+            json += getCommonJSONFields();
+
+            json += ",\"current\":";
             json += current;
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"currentsensor\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+
+            json += "}";
             return json;
         }
 

@@ -10,11 +10,31 @@ namespace WindowsFormsApplication2
     {
         public String nodeId;
         public String address;
+        public bool enabled;
+        public String type;
 
+        public Sensor()
+        {
+            type = "sensor";
+        }
 
         virtual public String getJSON()
         {
             return "";
+        }
+
+        public String getCommonJSONFields()
+        {
+            String json = "";
+            json += "\"name\":\"";
+            json += sensorname + "\"";
+            json += ",\"type\":\"";
+            json += type + "\"";
+            json += ",\"enabled\":";
+            json += enabled ? "true" : "false";
+            json += ",\"addr\":\"";
+            json += getSensorAddress() + "\"";
+            return json;
         }
         public String getSensorAddress()
         {

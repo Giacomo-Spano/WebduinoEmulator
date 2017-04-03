@@ -8,28 +8,33 @@ namespace WindowsFormsApplication2
 {
     public class DoorSensor : Sensor
     {
-        public bool statusOpen;
+        private bool statusOpen;
+
+        public DoorSensor()
+        {
+            type = "doorsensor";
+        }
 
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"statusopen\":";
-            if (statusOpen)
-                json += "true";
-            else
-                json += "false";
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"doorsensor\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+            json += getCommonJSONFields();
+
+            json += ",\"statusopen\":";
+            json += (statusOpen) ? "true" : "false";
+
+            json += "}";
             return json;
         }
 
-        bool getStatusOpen()
+        public bool getStatusOpen()
         {
             return statusOpen;
+        }
+        public void setStatusOpen(bool status)
+        {
+            statusOpen = status;
         }
     }
 }

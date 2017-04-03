@@ -147,17 +147,19 @@ namespace WindowsFormsApplication2
 
             json += ",\"sensors\":[";
 
-            if (getTemperatureSensorsEnabled() == true)
-            {
+            //if (getTemperatureSensorsEnabled() == true)
+            //{
                 int i = 0;
                 foreach (Sensor sensor in sensorList)
                 {
-                    DS18S20Sensor temperatureSensor = (DS18S20Sensor)sensor;
+                if (!sensor.enabled)
+                    continue;
+                    //DS18S20Sensor temperatureSensor = (DS18S20Sensor)sensor;
                     if (i++ != 0)
                         json += ",";
-                    json += temperatureSensor.getJSON();
+                    json += sensor.getJSON();
                 }
-            }
+            //}
 
             json += "]";
             json += "}";

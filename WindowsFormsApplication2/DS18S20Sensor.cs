@@ -10,22 +10,24 @@ namespace WindowsFormsApplication2
     {
         public float temperature;
         public float avTemperature;
-        
+
+        public DS18S20Sensor()
+        {
+            type = "temperature";
+        }
+
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"temperature\":";
-            //json += Util::floatToString(temperature);
+            json += getCommonJSONFields();
+
+            json += ",\"temperature\":";
             json += getTemperature();
             json += ",\"avtemperature\":";
-            //json += Util::floatToString(avTemperature);
             json += getAvTemperature();
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"temperature\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+
+            json += "}";
             return json;
         }
 

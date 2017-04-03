@@ -10,21 +10,23 @@ namespace WindowsFormsApplication2
     {
         public bool releOn;
 
+        public ReleActuator()
+        {
+            type = "releactuator";
+        }
+
         public override String getJSON()
         {
             String json = "";
             json += "{";
+            json += getCommonJSONFields();
+
             json += "\"releon\":";
-            if (releOn)
-                json += "true";
-            else
-                json += "false";
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"releactuator\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+            json +=  (releOn) ? "true" : "false";
+
+            json += "}";
             return json;
         }
+
     }
 }
