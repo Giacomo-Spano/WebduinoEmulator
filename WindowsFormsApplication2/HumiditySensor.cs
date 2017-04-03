@@ -10,20 +10,24 @@ namespace WindowsFormsApplication2
     {
         public float humidity;
 
+        public HumiditySensor()
+        {
+            type = "humiditysensor";
+        }
+
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"humidity\":";
+            json += getCommonJSONFields();
+
+            json += ",\"humidity\":";
             json += humidity;
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"humiditysensor\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+
+            json += "}";
             return json;
         }
-
+        
         public float getHumidity()
         {
             return humidity;

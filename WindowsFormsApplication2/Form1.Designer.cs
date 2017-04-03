@@ -30,10 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.registerButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.shieldIdTextBox = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.button2 = new System.Windows.Forms.Button();
@@ -52,43 +48,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.objectListView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // registerButton
-            // 
-            this.registerButton.Location = new System.Drawing.Point(775, 102);
-            this.registerButton.Name = "registerButton";
-            this.registerButton.Size = new System.Drawing.Size(75, 23);
-            this.registerButton.TabIndex = 0;
-            this.registerButton.Text = "Register";
-            this.registerButton.UseVisualStyleBackColor = true;
-            this.registerButton.Click += new System.EventHandler(this.registerButton_Click_1);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(779, 271);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Shield ID";
-            // 
-            // shieldIdTextBox
-            // 
-            this.shieldIdTextBox.Location = new System.Drawing.Point(747, 309);
-            this.shieldIdTextBox.Name = "shieldIdTextBox";
-            this.shieldIdTextBox.Size = new System.Drawing.Size(100, 20);
-            this.shieldIdTextBox.TabIndex = 2;
-            this.shieldIdTextBox.Text = "0";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(775, 162);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "SendSensorStatus";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.sendSensorStatusButton_Click_1);
-            // 
             // treeView1
             // 
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -97,7 +56,7 @@
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
             this.treeView1.SelectedImageIndex = 0;
-            this.treeView1.Size = new System.Drawing.Size(168, 336);
+            this.treeView1.Size = new System.Drawing.Size(201, 345);
             this.treeView1.TabIndex = 4;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             this.treeView1.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeView1_NodeMouseClick);
@@ -120,9 +79,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(766, 12);
+            this.button2.Location = new System.Drawing.Point(784, 353);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(66, 33);
             this.button2.TabIndex = 5;
             this.button2.Text = "save";
             this.button2.UseVisualStyleBackColor = true;
@@ -130,9 +89,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(766, 51);
+            this.button3.Location = new System.Drawing.Point(712, 353);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(66, 32);
             this.button3.TabIndex = 6;
             this.button3.Text = "load";
             this.button3.UseVisualStyleBackColor = true;
@@ -140,7 +99,7 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(29, 12);
+            this.splitContainer1.Location = new System.Drawing.Point(3, 2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -150,8 +109,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.objectListView1);
-            this.splitContainer1.Size = new System.Drawing.Size(712, 336);
-            this.splitContainer1.SplitterDistance = 168;
+            this.splitContainer1.Size = new System.Drawing.Size(856, 345);
+            this.splitContainer1.SplitterDistance = 201;
             this.splitContainer1.TabIndex = 7;
             // 
             // objectListView1
@@ -175,7 +134,7 @@
             this.objectListView1.Location = new System.Drawing.Point(0, 0);
             this.objectListView1.Name = "objectListView1";
             this.objectListView1.ShowGroups = false;
-            this.objectListView1.Size = new System.Drawing.Size(540, 336);
+            this.objectListView1.Size = new System.Drawing.Size(651, 345);
             this.objectListView1.TabIndex = 8;
             this.objectListView1.UseCompatibleStateImageBehavior = false;
             this.objectListView1.View = System.Windows.Forms.View.Details;
@@ -225,10 +184,6 @@
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.shieldIdTextBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.registerButton);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -238,16 +193,10 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.objectListView1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button registerButton;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox shieldIdTextBox;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;

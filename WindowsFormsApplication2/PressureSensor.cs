@@ -10,20 +10,24 @@ namespace WindowsFormsApplication2
     {
         public float pressure;
 
+        public PressureSensor()
+        {
+            type = "pressuresensor";
+        }
+
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"pressure\":";
+            json += getCommonJSONFields();
+
+            json += ",\"pressure\":";
             json += pressure;
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"pressuresensor\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+
+            json += "}";
             return json;
         }
-
+        
         public float getPressure()
         {
             return pressure;

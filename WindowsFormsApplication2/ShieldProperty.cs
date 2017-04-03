@@ -12,12 +12,27 @@ namespace WindowsFormsApplication2
         {
         }
         private String nodeId;
+        private String shieldNodeId;
         private String started;
         private String name ;
         private String value;
         private String description;
         private String action;
         private String temperatureSensorEnabled;
+        private String enabled;
+
+        public string Enabled
+        {
+            get
+            {
+                return enabled;
+            }
+
+            set
+            {
+                this.enabled = value;
+            }
+        }
 
         public string NodeId
         {
@@ -29,6 +44,19 @@ namespace WindowsFormsApplication2
             set
             {
                 this.nodeId = value;
+            }
+        }
+
+        public string ShieldNodeId
+        {
+            get
+            {
+                return shieldNodeId;
+            }
+
+            set
+            {
+                this.shieldNodeId = value;
             }
         }
 

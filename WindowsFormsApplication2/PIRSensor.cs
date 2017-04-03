@@ -10,20 +10,21 @@ namespace WindowsFormsApplication2
     {
         public bool motionDetected;
 
+        public PIRSensor()
+        {
+            type = "pirsensor";
+        }
+
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"motiondetected\":";
-            if (motionDetected)
-                json += "true";
-            else
-                json += "false";
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"pirsensor\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+            json += getCommonJSONFields();
+
+            json += ",\"motiondetected\":";
+            json += (motionDetected) ? "true" : json += "false";
+
+            json += "}";
             return json;
         }
 

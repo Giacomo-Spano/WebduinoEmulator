@@ -32,6 +32,7 @@ namespace WindowsFormsApplication2
 
         // shield
         const String property_ShieldName = "shieldName";
+        const String property_Enabled = "Enabled";
         const String property_ShieldStarted = "shieldStarted";
         const String property_ShieldId = "shieldId";
         const String property_MACAddress = "MACAddress";
@@ -51,7 +52,7 @@ namespace WindowsFormsApplication2
         // PIR sensor
         const String property_PIRSensor_Current = "pirsensor_motiondetected";
         // Door sensor
-        const String property_DoorSensor_Opne = "doorsensor_open";
+        const String property_DoorSensor_Open = "doorsensor_open";
 
         //actuator
         const String property_ActuatorName = "actuatorName";
@@ -63,9 +64,6 @@ namespace WindowsFormsApplication2
         const String property_Program = "actuatorName";
         //rele actuator
         const String property_Rele_OpenStatus = "releactuator_open";
-
-
-
 
 
         const string fileName = "C:\\scratch\\streamtest.txt";
@@ -249,22 +247,8 @@ namespace WindowsFormsApplication2
             }
         }
 
-
-
-        //public Alpha oAlpha = new Alpha();
         private void Form1_Load(object sender, System.EventArgs e)
         {
-
-            //Thread trd = new Thread(new ThreadStart(this.ThreadTask));
-            /*Thread trd = new Thread(new ThreadStart(oAlpha.Beta));
-            trd.IsBackground = true;
-            trd.Start();*/
-            /*Alpha oAlpha = new Alpha();
-            oAlpha.port = "8001";
-            Thread trd = new Thread(new ThreadStart(oAlpha.Beta));
-            trd.IsBackground = true;
-            trd.Start();*/
-
             load();
 
             shields.setup();
@@ -293,27 +277,58 @@ namespace WindowsFormsApplication2
                 Shield shield = shields.shieldFromNodeId(property.NodeId);
                 shield.registerShield();
             }
+            else if (property.Name.Equals(property_Enabled))
+            {
+                Shield shield = shields.shieldFromNodeId(property.ShieldNodeId);
+                if (shield != null)
+                {
+                    Sensor sensor = (Sensor)shield.sensorFromNodeId(property.NodeId);
+                    if (sensor != null)
+                    {
+                        sensor.enabled = !sensor.enabled;
+                        if (sensor.enabled)
+                        {
+                            property.Value = "true";
+                            property.Action = "Disable";
+                        }
+                        else
+                        {
+                            property.Value = "false";
+                            property.Action = "Enable";
+                        }
+                        shield.sendSensorsStatus();
+                    }
+                }
+            }
+            else if (property.Name.Equals(property_DoorSensor_Open))
+            {
+                Shield shield = shields.shieldFromNodeId(property.ShieldNodeId);
+                DoorSensor doorSensor = (DoorSensor)shield.sensorFromNodeId(property.NodeId);
+                doorSensor.setStatusOpen(!doorSensor.getStatusOpen());
+                if (doorSensor.getStatusOpen())
+                {
+                    property.Value = "open";
+                    property.Action = "close";
+                }
+                else
+                {
+                    property.Value = "closed";
+                    property.Action = "open";
+                }
+                shield.sendSensorsStatus();
+            }
             // If something about the object changed, you probably want to refresh the model
             this.objectListView1.RefreshObject(e.Model);
+            //this.objectListView1.Update();
+            //this.objectListView1.SetObjects(propertyList);
+            //this.objectListView1.Refresh();
         }
-
-        /*private void ThreadTask()
-        {
-
-            WebServer ws = new WebServer(SendResponse, "http://192.168.1.3:8000/webduino/");
-            ws.start();
-
-            ws.Run();
-
-            //WebServer ws2 = new WebServer(SendResponse, "http://192.168.1.3:8001/webduino/");
-            //ws2.Run();
-
-        }*/
 
         public class Alpha
         {
             public String port = "8000";
-            public String localIP = "192.168.1.3";
+            //public String localIP = "192.168.1.3";
+            public String localIP = "127.1.1.1";
             public String nodeId;
             // This method that will be called when the thread is started
             public void Beta()
@@ -361,8 +376,6 @@ namespace WindowsFormsApplication2
 
             return string.Format("<HTML><BODY>My web page.<br>{0}</BODY></HTML>", DateTime.Now);
         }
-
-
 
         private void InitializeTreeView()
         {
@@ -435,7 +448,8 @@ namespace WindowsFormsApplication2
                     if (actuator is Heater)
                     {
                         sensorIconIndex = iconHeater;
-                    } else if (actuator is ReleActuator)
+                    }
+                    else if (actuator is ReleActuator)
                     {
                         sensorIconIndex = iconReleActuator;
                     }
@@ -452,8 +466,6 @@ namespace WindowsFormsApplication2
 
             treeView1.ExpandAll();
         }
-
-
 
         protected void treeView1_AfterSelect(object sender, System.Windows.Forms.TreeViewEventArgs e)
         {
@@ -518,22 +530,60 @@ namespace WindowsFormsApplication2
                 Sensor sensor = shield.sensorFromNodeId((String)node.Tag);
 
                 ShieldProperty sp = new ShieldProperty();
-                sp.NodeId = node.shieldNodeId;
-                sp.Name = property_SensorName;
+                sp.ShieldNodeId = node.shieldNodeId;
+                sp.NodeId = (String)node.Tag; sp.Name = property_SensorName;
                 sp.Description = "Sensor name";
                 sp.Value = sensor.sensorname;
+                propertyList.Add(sp);
+
+                sp = new ShieldProperty();
+                sp.ShieldNodeId = node.shieldNodeId;
+                sp.NodeId = (String)node.Tag; sp.Name = property_Enabled;
+                sp.Description = "Enabled";
+                if (sensor.enabled)
+                {
+                    sp.Value = "true";
+                    sp.Action = "Disable";
+                }
+                else
+                {
+                    sp.Value = "false";
+                    sp.Action = "Enable";
+                }
                 propertyList.Add(sp);
 
                 if (sensor is DS18S20Sensor)
                 {
                     sp = new ShieldProperty();
-                    sp.NodeId = node.shieldNodeId;
+                    sp.ShieldNodeId = node.shieldNodeId;
+                    sp.NodeId = (String)node.Tag;
                     sp.Name = property_TemperatureSensor_Temperature;
                     sp.Description = "Temperature";
                     DS18S20Sensor dsSensor = (DS18S20Sensor)sensor;
                     sp.Value = "" + dsSensor.temperature;
                     sp.Action = "Update";
 
+                    propertyList.Add(sp);
+                }
+                else if (sensor is DoorSensor)
+                {
+                    sp = new ShieldProperty();
+                    sp.ShieldNodeId = node.shieldNodeId;
+                    sp.NodeId = (String)node.Tag;
+                    sp.Name = property_DoorSensor_Open;
+                    sp.Description = "Status";
+                    DoorSensor doorSensor = (DoorSensor)sensor;
+
+                    if (doorSensor.getStatusOpen())
+                    {
+                        sp.Value = "open";
+                        sp.Action = "close";
+                    }
+                    else
+                    {
+                        sp.Value = "closed";
+                        sp.Action = "open";
+                    }
                     propertyList.Add(sp);
                 }
             }
@@ -544,7 +594,8 @@ namespace WindowsFormsApplication2
                 Sensor actuator = shield.actuatorFromNodeId((String)node.Tag);
 
                 ShieldProperty sp = new ShieldProperty();
-                sp.NodeId = node.shieldNodeId;
+                sp.ShieldNodeId = node.shieldNodeId;
+                sp.NodeId = (String)node.Tag;
                 sp.Name = property_ActuatorName;
                 sp.Description = "Actuator name";
                 sp.Value = actuator.sensorname;
@@ -742,6 +793,7 @@ namespace WindowsFormsApplication2
                         }
                         newSensor.nodeId = Guid.NewGuid().ToString();
                         newSensor.sensorname = (String)sensor.GetValue("name");
+                        newSensor.enabled = (bool)sensor.GetValue("enabled");
                         newSensor.setSensorAddress((String)sensor.GetValue("addr"));
                         shield.sensorList.Add(newSensor);
                     }
@@ -766,7 +818,7 @@ namespace WindowsFormsApplication2
                         newActuator.nodeId = Guid.NewGuid().ToString();
                         newActuator.sensorname = (String)actuator.GetValue("name");
                         newActuator.setSensorAddress((String)actuator.GetValue("addr"));
-                        shield.actuatorList.Add(newActuator);                        
+                        shield.actuatorList.Add(newActuator);
                     }
 
 
@@ -889,13 +941,6 @@ namespace WindowsFormsApplication2
             }
 
 
-        }
-
-        private void registerButton_Click_1(object sender, EventArgs e)
-        {
-            int id = shield.registerShield();
-
-            shieldIdTextBox.Text = "" + id;
         }
 
         private void timer1_Tick(object sender, EventArgs e)

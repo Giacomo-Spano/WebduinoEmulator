@@ -9,22 +9,27 @@ namespace WindowsFormsApplication2
     class Heater : Sensor
     {
         public String status;
-        public String releStatus;
+        public bool releStatus;
+
+        public Heater()
+        {
+            type = "Heater";
+        }
 
         public override String getJSON()
         {
             String json = "";
             json += "{";
-            json += "\"status\":\"";
+            json += getCommonJSONFields();
+
+            json += ",\"status\":\"";
             json += status + "\"";
             json += ",\"relestatus\":\"";
-            json += releStatus + "\"";
-            json += ",\"name\":\"";
-            json += sensorname + "\"";
-            json += ",\"type\":\"heater\"";
-            json += ",\"addr\":\"";
-            json += getSensorAddress() + "\"}";
+            json += releStatus ? "true" : "false";
+
+            json += "\"}";
             return json;
         }
+
     }
 }
